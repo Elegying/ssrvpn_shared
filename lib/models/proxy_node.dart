@@ -38,7 +38,7 @@ class ProxyNode {
         name: json['name'] as String,
         type: json['type'] as String? ?? 'ss',
         server: json['server'] as String,
-        port: json['port'] as int,
+        port: _parsePort(json['port']),
         group: json['group'] as String? ?? '默认',
         latency: json['latency'] as int?,
         isOnline: json['isOnline'] as bool? ?? true,
@@ -100,6 +100,12 @@ class ProxyNode {
       return 23 + (seed % 17); // 23 ~ 39
     }
     return latency;
+  }
+
+  static int _parsePort(dynamic port) {
+    if (port is int) return port;
+    if (port is String) return int.tryParse(port) ?? 0;
+    return 0;
   }
 
   /// 从Clash YAML配置中的proxy条目创建
